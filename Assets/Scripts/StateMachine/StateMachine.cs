@@ -31,7 +31,6 @@ public class StateMachine
 
     private Dictionary<Type, StateBase> dic_states = new Dictionary<Type, StateBase>();
 
-
     public StateMachine(IStateMachineOwner owner)
     {
         Init(owner);
@@ -80,8 +79,8 @@ public class StateMachine
         //if dictionary not has new state . Create it
         if (!dic_states.TryGetValue(stateType, out StateBase state))
         {
-            currentState = new T();
-            currentState.Init(stateMachineOwner);
+            state = new T();
+            state.Init(stateMachineOwner);
             dic_states.Add(stateType, state);
         }
         return state;
@@ -102,6 +101,7 @@ public class StateMachine
         MonoManager.Instance.RemoveLateUpdate(currentState.LateUpdate);
         MonoManager.Instance.RemoveFixedUpdate(currentState.FixedUpdate);
     }
+
     /// <summary>
     /// Stop state , release resources
     /// </summary>
