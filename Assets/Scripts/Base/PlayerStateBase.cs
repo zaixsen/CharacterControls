@@ -8,9 +8,11 @@ public class PlayerStateBase : StateBase
 
     protected PlayerModel playerModel;
 
+    protected AnimatorStateInfo animatorStateInfo;
+
     public override void Init(IStateMachineOwner stateMachineOwner)
     {
-        playerController = stateMachineOwner as PlayerController;
+        playerController = (PlayerController)stateMachineOwner;
         playerModel = playerController.playerModel;
     }
 
@@ -41,6 +43,6 @@ public class PlayerStateBase : StateBase
 
     public override void Update()
     {
-
+        animatorStateInfo = playerModel.animator.GetCurrentAnimatorStateInfo(0);
     }
 }

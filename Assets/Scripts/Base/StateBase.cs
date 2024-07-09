@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// State Base 
+/// State Base
 /// </summary>
-public abstract class StateBase : MonoBehaviour
+public abstract class StateBase
 {
     /// <summary>
     /// Init State

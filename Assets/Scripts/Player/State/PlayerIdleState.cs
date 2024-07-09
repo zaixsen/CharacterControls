@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerIdleState : PlayerStateBase
 {
-
+   
     public override void Enter()
     {
         base.Enter();
@@ -17,7 +17,10 @@ public class PlayerIdleState : PlayerStateBase
         base.Update();
 
         #region ¼àÌý±¼ÅÜ
-
+        if (playerController.inputMoveVec2 != Vector2.zero)
+        {
+            playerController.SwitchState(PlayerState.Run);
+        }
         #endregion
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Player controller
 /// </summary>
-public class PlayerController : MonoBehaviour, IStateMachineOwner
+public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineOwner
 {
     public PlayerModel playerModel;
 
@@ -12,17 +12,21 @@ public class PlayerController : MonoBehaviour, IStateMachineOwner
 
     public InputSystem inputActions;
 
-    private Vector2 inputMoveVec2;
+    public float rotationSpeed = 8f;
 
-    private void Awake()
+    [HideInInspector] public Vector2 inputMoveVec2;
+
+    protected override void Awake()
     {
+        base.Awake();
         stateMachine = new StateMachine(this);
         inputActions = new InputSystem();
     }
 
     private void Start()
     {
-        SwitchState(PlayerState.Run);
+        LockCursor();
+        SwitchState(PlayerState.Idle);
     }
     private void Update()
     {
@@ -56,6 +60,11 @@ public class PlayerController : MonoBehaviour, IStateMachineOwner
     public void PlayerAnimation(string animationName, float fixedTransitionDuration = 0.25f)
     {
         playerModel.animator.CrossFadeInFixedTime(animationName, fixedTransitionDuration);
+    }
+    private void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
     private void OnEnable()
     {

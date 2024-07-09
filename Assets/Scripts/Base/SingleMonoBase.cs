@@ -11,7 +11,7 @@ public class SingleMonoBase<T> : MonoBehaviour where T : SingleMonoBase<T>
 
     public static T Instance;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         if (Instance != null)
         {
@@ -21,7 +21,7 @@ public class SingleMonoBase<T> : MonoBehaviour where T : SingleMonoBase<T>
         Instance = this as T;
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         Destroy();
     }

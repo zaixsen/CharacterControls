@@ -74,7 +74,7 @@ public class MonoManager : SingleMonoBase<MonoManager>
         lateUpdateAction -= lateTask;
     }
 
-    private void Update()
+    private  void Update()
     {
         updateAction?.Invoke();
     }

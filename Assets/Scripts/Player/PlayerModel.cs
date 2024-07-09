@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum PlayerState
 {
-    Idle,
-    Run,
+    Idle, Run,
+}
+public enum ModelFoot
+{
+    Right, Left,
 }
 public class PlayerModel : MonoBehaviour
 {
@@ -12,14 +15,22 @@ public class PlayerModel : MonoBehaviour
 
     [HideInInspector] public PlayerState state;
 
-    private void Start()
+    #region ¶¯»­×´Ì¬
+    public ModelFoot foot = ModelFoot.Right;
+    /// <summary>
+    /// Take left foot
+    /// </summary>
+    public void SetOutLeftFoot()
     {
-
+        foot = ModelFoot.Left;
     }
-
-    private void Update()
+    /// <summary>
+    /// Take right foot
+    /// </summary>
+    public void SetOutRightFoot()
     {
-
+        foot = ModelFoot.Right;
     }
+    #endregion
 
 }

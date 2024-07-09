@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.GridLayoutGroup;
-
 /// <summary>
 /// Onwer Interface
 /// </summary>
@@ -29,10 +26,11 @@ public class StateMachine
     /// </summary>
     public bool HasState { get => currentState != null; }
 
-    private Dictionary<Type, StateBase> dic_states = new Dictionary<Type, StateBase>();
+    private Dictionary<Type, StateBase> dic_states;
 
     public StateMachine(IStateMachineOwner owner)
     {
+        dic_states = new Dictionary<Type, StateBase>();
         Init(owner);
     }
 
@@ -52,6 +50,7 @@ public class StateMachine
     public void EnterState<T>() where T : StateBase, new()
     {
         //same state return
+
         if (HasState && currentState.GetType() == typeof(T)) return;
 
         #region Exit pre state

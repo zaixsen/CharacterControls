@@ -9,6 +9,8 @@ public class Test : SingleMonoBase<Test>
         MonoManager.Instance.AddUpdateTask(Task);
         MonoManager.Instance.AddFixedUpdate(FixedTask);
         MonoManager.Instance.AddLateUpdate(LateTask);
+
+        StateBase stateBase = new PlayerIdleState();
     }
 
     private void Task()
