@@ -11,8 +11,20 @@ public class PlayerRunState : PlayerIdleState
         base.Enter();
 
         mainCamera = Camera.main;
+        #region 左右脚判断
 
-        playerController.PlayerAnimation("Run");
+        switch (playerModel.foot)
+        {
+            case ModelFoot.Right:
+                playerController.PlayerAnimation("Run", 0.25f, 0.25f);
+                playerModel.foot = ModelFoot.Left;
+                break;
+            case ModelFoot.Left:
+                playerController.PlayerAnimation("Run", 0.25f, 0);
+                playerModel.foot = ModelFoot.Right;
+                break;
+        }
+        #endregion
     }
 
     public override void Update()
@@ -23,13 +35,25 @@ public class PlayerRunState : PlayerIdleState
         #endregion
 
         #region 检测待机
+
         if (playerController.inputMoveVec2 == Vector2.zero)
         {
-            playerController.SwitchState(PlayerState.Idle);
+            playerController.SwitchState(PlayerState.RunEnd);
         }
+
+        #endregion
+
+        #region 检测闪避
+
+        if (playerController.inputActions.Player.Evade.IsPressed())
+        {
+            playerController.SwitchState(PlayerState.Evade_Front);
+        }
+
         #endregion
 
         #region 处理移动方向
+
         if (playerController.inputMoveVec2 != Vector2.zero)
         {
             Vector3 inputMoveVec3 = new Vector3(playerController.inputMoveVec2.x, 0, playerController.inputMoveVec2.y);
@@ -39,8 +63,20 @@ public class PlayerRunState : PlayerIdleState
 
             //四元数 * 向量  数学公式  有时间研究一下
             Vector3 targetDir = Quaternion.Euler(0, cameraAxisY, 0) * inputMoveVec3;
+
             Quaternion targetQua = Quaternion.LookRotation(targetDir);
-            playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, targetQua, Time.deltaTime * playerController.rotationSpeed);
+
+            float angles = Mathf.Abs(targetQua.eulerAngles.y - playerModel.transform.eulerAngles.y);
+
+            if (angles > 177.5f && angles < 182.5f)
+            {
+                playerController.SwitchState(PlayerState.TurnBack);
+            }
+            else
+            {
+                playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation,
+                    targetQua, Time.deltaTime * playerController.rotationSpeed);
+            }
         }
         #endregion  
     }

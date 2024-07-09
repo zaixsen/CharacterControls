@@ -14,6 +14,8 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
 
     public float rotationSpeed = 8f;
 
+    public float evadeTimer = 1f;
+
     [HideInInspector] public Vector2 inputMoveVec2;
 
     protected override void Awake()
@@ -31,6 +33,14 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
     private void Update()
     {
         inputMoveVec2 = inputActions.Player.Move.ReadValue<Vector2>().normalized;
+
+        if (evadeTimer < 1f)
+            evadeTimer += Time.deltaTime;
+
+        if (evadeTimer > 1f)
+        {
+            evadeTimer = 1f;
+        }
     }
     /// <summary>
     /// Switch state
@@ -46,12 +56,26 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
             case PlayerState.Run:
                 stateMachine.EnterState<PlayerRunState>();
                 break;
-            default:
+            case PlayerState.RunEnd:
+                stateMachine.EnterState<PlayerRunEndState>();
+                break;
+            case PlayerState.TurnBack:
+                stateMachine.EnterState<PlayerTurnBackState>();
+                break;
+            case PlayerState.Evade_Front:
+            case PlayerState.Evade_Back:    //向前动画不执行 状态一直是 Evade_Back 并不能转成 Evade_Front
+                if (evadeTimer != 1) return;
+                stateMachine.EnterState<PlayerEvadeState>();
+                evadeTimer -= 1f;
+                break;
+            case PlayerState.EvadeEnd:
+                stateMachine.EnterState<PlayerEvadeEndState>();
                 break;
         }
 
         playerModel.state = playerState;
     }
+
     /// <summary>
     /// Play Animation
     /// </summary>
@@ -61,6 +85,18 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
     {
         playerModel.animator.CrossFadeInFixedTime(animationName, fixedTransitionDuration);
     }
+
+    /// <summary>
+    /// Play Animation 过渡到动画
+    /// </summary>
+    /// <param name="animationName">Animation Name</param>
+    /// <param name="fixedTransitionDuration">Duration</param>
+    /// <param name="fixedTimeOffset">Animation start offset</param>
+    public void PlayerAnimation(string animationName, float fixedTransitionDuration, float fixedTimeOffset)
+    {
+        playerModel.animator.CrossFadeInFixedTime(animationName, fixedTransitionDuration, 0, fixedTimeOffset);
+    }
+
     private void LockCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;

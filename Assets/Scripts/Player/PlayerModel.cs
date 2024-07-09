@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum PlayerState
 {
-    Idle, Run,
+    Idle, Run, RunEnd, TurnBack, Evade_Front, Evade_Back, EvadeEnd
 }
 public enum ModelFoot
 {
@@ -15,8 +15,12 @@ public class PlayerModel : MonoBehaviour
 
     [HideInInspector] public PlayerState state;
 
+    [HideInInspector] public float gravity = -9.8f;
+
+    public CharacterController characterController;
+
     #region ¶¯»­×´Ì¬
-    public ModelFoot foot = ModelFoot.Right;
+    [HideInInspector] public ModelFoot foot = ModelFoot.Right;
     /// <summary>
     /// Take left foot
     /// </summary>

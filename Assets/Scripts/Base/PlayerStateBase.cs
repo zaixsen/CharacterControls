@@ -10,6 +10,7 @@ public class PlayerStateBase : StateBase
 
     protected AnimatorStateInfo animatorStateInfo;
 
+
     public override void Init(IStateMachineOwner stateMachineOwner)
     {
         playerController = (PlayerController)stateMachineOwner;
@@ -43,6 +44,10 @@ public class PlayerStateBase : StateBase
 
     public override void Update()
     {
+        //Add gravity
+        playerModel.characterController.Move(new Vector3(0, playerModel.gravity * Time.deltaTime, 0));
+
+        //refresh animator state info 
         animatorStateInfo = playerModel.animator.GetCurrentAnimatorStateInfo(0);
     }
 }
