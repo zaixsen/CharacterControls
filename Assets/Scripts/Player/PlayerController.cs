@@ -30,6 +30,7 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
         LockCursor();
         SwitchState(PlayerState.Idle);
     }
+
     private void Update()
     {
         inputMoveVec2 = inputActions.Player.Move.ReadValue<Vector2>().normalized;
@@ -42,6 +43,7 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
             evadeTimer = 1f;
         }
     }
+
     /// <summary>
     /// Switch state
     /// </summary>
@@ -70,6 +72,21 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
                 break;
             case PlayerState.EvadeEnd:
                 stateMachine.EnterState<PlayerEvadeEndState>();
+                break;
+            case PlayerState.NormalAttack:
+                stateMachine.EnterState<PlayerNormalAttackState>();
+                break;
+            case PlayerState.NormalAttackEnd:
+                stateMachine.EnterState<PlayerNormalAttackEndState>();
+                break;
+            case PlayerState.BigSkillStart:
+                stateMachine.EnterState<PlayerSkillBigStartState>();
+                break;
+            case PlayerState.BigSkill:
+                stateMachine.EnterState<PlayerSkillBigState>();
+                break;
+            case PlayerState.BigSkillEnd:
+                stateMachine.EnterState<PlayerSkillBigEndState>();
                 break;
         }
 

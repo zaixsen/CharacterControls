@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+public enum PlayerState
+{
+    Idle, Run, RunEnd, TurnBack, Evade_Front, Evade_Back, EvadeEnd, NormalAttack, NormalAttackEnd,
+    BigSkillStart, BigSkill, BigSkillEnd
+}
 public class PlayerStateBase : StateBase
 {
     protected PlayerController playerController;
@@ -10,6 +14,7 @@ public class PlayerStateBase : StateBase
 
     protected AnimatorStateInfo animatorStateInfo;
 
+    protected float animationPlayTime = 0;
 
     public override void Init(IStateMachineOwner stateMachineOwner)
     {
@@ -19,7 +24,7 @@ public class PlayerStateBase : StateBase
 
     public override void Enter()
     {
-
+        animationPlayTime = 0;
     }
 
     public override void Exit()
@@ -49,5 +54,10 @@ public class PlayerStateBase : StateBase
 
         //refresh animator state info 
         animatorStateInfo = playerModel.animator.GetCurrentAnimatorStateInfo(0);
+    }
+
+    public bool IsAnimationEnd()
+    {
+        return animatorStateInfo.normalizedTime >= 1.0f && !playerModel.animator.IsInTransition(0);
     }
 }

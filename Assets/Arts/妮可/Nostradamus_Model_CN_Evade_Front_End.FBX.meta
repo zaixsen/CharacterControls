@@ -33,7 +33,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Evade_Front
+      name: Evade_Front_End
       takeName: Take 001
       internalID: 1827226128182048838
       firstFrame: 12
