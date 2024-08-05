@@ -28,7 +28,7 @@ public class PlayerTurnBackState : PlayerStateBase
 
         if (IsAnimationEnd())
         {
-            playerController.SwitchState(PlayerState.Run);
+            playerController.SwitchState(PlayerState.Walk);
             return;
         }
 

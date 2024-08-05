@@ -13,12 +13,12 @@ public class PlayerEvadeEndState : PlayerStateBase
 
         #region ≈–∂œ«∞∫Û…¡±‹
 
-        switch (playerModel.state)
+        switch (playerModel.currentState)
         {
-            case PlayerState.Evade_Front:
+            case PlayerState.Evade_Front_End:
                 playerController.PlayerAnimation("Evade_Front_End");
                 break;
-            case PlayerState.Evade_Back:
+            case PlayerState.Evade_Back_End:
                 playerController.PlayerAnimation("Evade_Back_End");
                 break;
         }
@@ -41,7 +41,7 @@ public class PlayerEvadeEndState : PlayerStateBase
         #region “∆∂ØºÏ≤‚
         if (playerController.inputMoveVec2 != Vector2.zero)
         {
-            playerController.SwitchState(PlayerState.Run);
+            playerController.SwitchState(PlayerState.Walk);
             return;
         }
         #endregion

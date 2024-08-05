@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class PlayerIdleState : PlayerStateBase
 {
-
     public override void Enter()
     {
         base.Enter();
-
-        playerController.PlayerAnimation("Idle");
+        switch (playerModel.currentState)
+        {
+            case PlayerState.Idle_AFK:
+                playerController.PlayerAnimation("Idle_AFK");
+                break;
+            case PlayerState.Idle:
+                playerController.PlayerAnimation("Idle");
+                break;
+        }
     }
 
     public override void Update()
@@ -34,6 +40,16 @@ public class PlayerIdleState : PlayerStateBase
 
         #endregion
 
+
+        #region ¼àÌý±¼ÅÜ
+        if (playerController.inputMoveVec2 != Vector2.zero)
+        {
+            playerController.SwitchState(PlayerState.Walk);
+            return;
+        }
+        #endregion
+
+
         #region ¼ì²âÉÁ±Ü
 
         if (playerController.inputActions.Player.Evade.triggered)
@@ -44,12 +60,24 @@ public class PlayerIdleState : PlayerStateBase
 
         #endregion
 
-        #region ¼àÌý±¼ÅÜ
-        if (playerController.inputMoveVec2 != Vector2.zero)
+        #region ¼ì²â¹Ò»ú
+        switch (playerModel.currentState)
         {
-            playerController.SwitchState(PlayerState.Run);
-            return;
+            case PlayerState.Idle:
+                if (statePlayingTime > 3)
+                {
+                    playerController.SwitchState(PlayerState.Idle_AFK);
+                }
+                break;
+            case PlayerState.Idle_AFK:
+                if (IsAnimationEnd())
+                {
+                    playerController.SwitchState(PlayerState.Idle);
+                }
+                break;
+
         }
+
         #endregion
     }
 }

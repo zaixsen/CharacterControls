@@ -55,7 +55,7 @@ public class PlayerRunEndState : PlayerStateBase
         #region ÒÆ¶¯¼ì²â
         if (playerController.inputMoveVec2 != Vector2.zero)
         {
-            playerController.SwitchState(PlayerState.Run);
+            playerController.SwitchState(PlayerState.Walk);
             return;
         }
         #endregion

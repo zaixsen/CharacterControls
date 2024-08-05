@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,17 +13,45 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
 
     public InputSystem inputActions;
 
+    public PlayerConfig playerConfig;
+
     public float rotationSpeed = 8f;
 
     public float evadeTimer = 1f;
 
     [HideInInspector] public Vector2 inputMoveVec2;
+    //配队
+    [HideInInspector] public List<PlayerModel> controllableModels;
+    //当前操控的角色下标
+    private int currentModeIndex;
+    //敌人标签列表
+    public List<string> enemyTagList;
 
     protected override void Awake()
     {
         base.Awake();
         stateMachine = new StateMachine(this);
         inputActions = new InputSystem();
+        controllableModels = new List<PlayerModel>();
+
+        #region 生成角色模型
+        for (int i = 0; i < playerConfig.models.Length; i++)
+        {
+            GameObject model = Instantiate(playerConfig.models[i], transform);
+            controllableModels.Add(model.GetComponent<PlayerModel>());
+            model.SetActive(false);
+            controllableModels[i].Init(enemyTagList);
+        }
+        #endregion
+
+        #region 操控配队的第一个角色
+
+        currentModeIndex = 0;
+        controllableModels[currentModeIndex].gameObject.SetActive(true);
+        playerModel = controllableModels[currentModeIndex];
+
+        #endregion
+
     }
 
     private void Start()
@@ -42,21 +71,24 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
         {
             evadeTimer = 1f;
         }
-    }
 
+    }
     /// <summary>
     /// Switch state
     /// </summary>
     /// <param name="playerState">player state</param>
     public void SwitchState(PlayerState playerState)
     {
+        playerModel.currentState = playerState;
         switch (playerState)
         {
             case PlayerState.Idle:
-                stateMachine.EnterState<PlayerIdleState>();
+            case PlayerState.Idle_AFK:
+                stateMachine.EnterState<PlayerIdleState>(true);
                 break;
+            case PlayerState.Walk:
             case PlayerState.Run:
-                stateMachine.EnterState<PlayerRunState>();
+                stateMachine.EnterState<PlayerRunState>(true);
                 break;
             case PlayerState.RunEnd:
                 stateMachine.EnterState<PlayerRunEndState>();
@@ -70,11 +102,12 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
                 stateMachine.EnterState<PlayerEvadeState>();
                 evadeTimer -= 1f;
                 break;
-            case PlayerState.EvadeEnd:
+            case PlayerState.Evade_Front_End:
+            case PlayerState.Evade_Back_End:
                 stateMachine.EnterState<PlayerEvadeEndState>();
                 break;
             case PlayerState.NormalAttack:
-                stateMachine.EnterState<PlayerNormalAttackState>();
+                stateMachine.EnterState<PlayerNormalAttackState>(true);
                 break;
             case PlayerState.NormalAttackEnd:
                 stateMachine.EnterState<PlayerNormalAttackEndState>();
@@ -88,11 +121,36 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
             case PlayerState.BigSkillEnd:
                 stateMachine.EnterState<PlayerSkillBigEndState>();
                 break;
+            case PlayerState.SwitchInNormal:
+                stateMachine.EnterState<PlayerSwitchInState>();
+                break;
         }
-
-        playerModel.state = playerState;
     }
 
+    public void SwitchNextModel()
+    {
+        //刷新状态机
+        stateMachine.Clear();
+
+        //退出当前模型
+        playerModel.Exit();
+
+        #region 控制下一个模型
+        currentModeIndex++;
+        currentModeIndex %= controllableModels.Count;
+        PlayerModel nextmodel = controllableModels[currentModeIndex];
+        nextmodel.gameObject.SetActive(true);
+
+        Vector3 pos = playerModel.transform.position;
+        Quaternion rot = playerModel.transform.rotation;
+
+        playerModel = nextmodel;
+        #endregion
+
+        playerModel.Enter(pos, rot);
+        //切换到入场状态
+        SwitchState(PlayerState.SwitchInNormal);
+    }
     /// <summary>
     /// Play Animation
     /// </summary>
@@ -127,4 +185,5 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
     {
         inputActions.Disable();
     }
+
 }

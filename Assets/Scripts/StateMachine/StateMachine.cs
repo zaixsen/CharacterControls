@@ -47,11 +47,12 @@ public class StateMachine
     /// Enter State
     /// </summary>
     /// <typeparam name="T">Only State machine model </typeparam>
-    public void EnterState<T>() where T : StateBase, new()
+    /// <typeparam name="reloadState">Load repead state </typeparam>
+    public void EnterState<T>(bool reloadState = false) where T : StateBase, new()
     {
         //same state return
 
-        if (HasState && currentState.GetType() == typeof(T)) return;
+        if (HasState && currentState.GetType() == typeof(T) && !reloadState) return;
 
         #region Exit pre state
 
@@ -102,11 +103,12 @@ public class StateMachine
     }
 
     /// <summary>
-    /// Stop state , release resources
+    /// Clear state , release resources
     /// </summary>
-    public void Stop()
+    public void Clear()
     {
         EixtCurrentState();
+        currentState = null;
         foreach (StateBase state in dic_states.Values)
         {
             state.UnInit();

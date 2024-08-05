@@ -12,3 +12,10 @@ ai解释：
 	利用CharacterController 的Move（）方法进行模拟重力  
 	gravity=-9.8f
         characterController.Move(new Vector3(0,gravity * Time.deltaTime, 0));
+攻击检测：
+	在进行攻击检测的时候  使用trigger 来判断是否攻击到敌人 判断的是 在挥刀的时候开启目标选择器 回到结束关闭目标选择器 这样可以更精准的判断攻击的敌人 开始和关闭用动画帧事件回调就可以
+ 
+攻击动画处理 ：
+	目前只处理了anbi的第一段攻击动画 之后动画按照这个为基准进行处理动画事件就行 判定是否受击通过接口 IHurt 来判断的
+寻找最近的敌人 ：
+	 这里用的是进行标签查找 找到所有敌人 判断最近距离

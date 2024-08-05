@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerRunState : PlayerIdleState
+public class PlayerRunState : PlayerStateBase
 {
     private Camera mainCamera;
 
@@ -11,20 +11,28 @@ public class PlayerRunState : PlayerIdleState
         base.Enter();
 
         mainCamera = Camera.main;
-        #region ×óÓÒ½ÅÅÐ¶Ï
 
-        switch (playerModel.foot)
+        switch (playerModel.currentState)
         {
-            case ModelFoot.Right:
-                playerController.PlayerAnimation("Run", 0.25f, 0.25f);
-                playerModel.foot = ModelFoot.Left;
+            case PlayerState.Walk:
+                #region ×óÓÒ½ÅÅÐ¶Ï
+                switch (playerModel.foot)
+                {
+                    case ModelFoot.Right:
+                        playerController.PlayerAnimation("Walk", 0.25f, 0.6f);
+                        playerModel.foot = ModelFoot.Left;
+                        break;
+                    case ModelFoot.Left:
+                        playerController.PlayerAnimation("Walk", 0.25f, 0);
+                        playerModel.foot = ModelFoot.Right;
+                        break;
+                }
+                #endregion
                 break;
-            case ModelFoot.Left:
-                playerController.PlayerAnimation("Run", 0.25f, 0);
-                playerModel.foot = ModelFoot.Right;
+            case PlayerState.Run:
+                playerController.PlayerAnimation("Run");
                 break;
         }
-        #endregion
     }
 
     public override void Update()
@@ -46,6 +54,7 @@ public class PlayerRunState : PlayerIdleState
             playerController.SwitchState(PlayerState.NormalAttack);
             return;
         }
+
         #endregion
 
         #region ¼ì²âÉÁ±Ü
@@ -93,8 +102,17 @@ public class PlayerRunState : PlayerIdleState
                 playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation,
                     targetQua, Time.deltaTime * playerController.rotationSpeed);
             }
+        }
+        #endregion
+
+        #region ¼ì²âÂýÅÜ±ä¼²ÅÜ
+
+        if (playerModel.currentState == PlayerState.Walk && statePlayingTime > 3)
+        {
+            playerController.SwitchState(PlayerState.Run);
             return;
         }
+
         #endregion
 
     }

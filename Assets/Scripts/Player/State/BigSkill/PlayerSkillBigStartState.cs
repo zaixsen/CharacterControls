@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class PlayerSkillBigStartState : PlayerStateBase
 {
@@ -10,11 +11,19 @@ public class PlayerSkillBigStartState : PlayerStateBase
     {
         base.Enter();
         //ÇÐ»»¾µÍ·
-        CameraManager.Instance.cm_brain.m_DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Style.Cut, 2f);
-        CameraManager.Instance.freeeLookCamera.SetActive(false);
-        playerModel.bigSkillStartShot.SetActive(true);
+        PlayableDirector playableDir = playerModel.GetComponentInChildren<PlayableDirector>();
+        if (playableDir)
+        {
+            playableDir.Play();
+        }
+        else
+        {
+            CameraManager.Instance.cm_brain.m_DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Style.Cut, 2f);
+            CameraManager.Instance.freeeLookCamera.SetActive(false);
+            playerModel.bigSkillStartShot.SetActive(true);
+        }
 
-        playerController.PlayerAnimation("BigSkill_Start",0f);
+        playerController.PlayerAnimation("BigSkill_Start", 0f);
     }
 
     public override void Update()

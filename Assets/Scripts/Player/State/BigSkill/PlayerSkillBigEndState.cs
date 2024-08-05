@@ -17,7 +17,6 @@ public class PlayerSkillBigEndState : PlayerStateBase
         playerController.PlayerAnimation("BigSkill_End", 0f);
     }
 
-
     public override void Update()
     {
         base.Update();

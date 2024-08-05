@@ -24,7 +24,7 @@ public class PlayerNormalAttackEndState : PlayerStateBase
 
         #region ¼ì²â¹¥»÷
 
-        if (playerController.inputActions.Player.Fire.triggered)
+        if (playerController.inputActions.Player.Fire.IsPressed())
         {
             //ÀÛ¼Ó¹¥»÷´ÎÊý
             playerModel.skillConfig.currentNormalAttackIndex++;
@@ -53,9 +53,9 @@ public class PlayerNormalAttackEndState : PlayerStateBase
 
         #region ¼àÌý±¼ÅÜ
 
-        if (playerController.inputMoveVec2 != Vector2.zero && animationPlayTime > 0.5f)
+        if (playerController.inputMoveVec2 != Vector2.zero && statePlayingTime > 0.5f)
         {
-            playerController.SwitchState(PlayerState.Run);
+            playerController.SwitchState(PlayerState.Walk);
             playerModel.skillConfig.currentNormalAttackIndex = 1;
             return;
         }

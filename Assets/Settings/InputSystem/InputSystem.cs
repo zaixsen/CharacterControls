@@ -71,6 +71,15 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchRole"",
+                    ""type"": ""Button"",
+                    ""id"": ""52fcf0c3-baf4-4921-80bc-46292d31a32c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -313,6 +322,17 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""BigSkill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""07ecf4df-16e8-4455-b96b-ab13ddec11f7"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchRole"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -905,6 +925,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Evade = m_Player.FindAction("Evade", throwIfNotFound: true);
         m_Player_BigSkill = m_Player.FindAction("BigSkill", throwIfNotFound: true);
+        m_Player_SwitchRole = m_Player.FindAction("SwitchRole", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -983,6 +1004,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Evade;
     private readonly InputAction m_Player_BigSkill;
+    private readonly InputAction m_Player_SwitchRole;
     public struct PlayerActions
     {
         private @InputSystem m_Wrapper;
@@ -992,6 +1014,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Evade => m_Wrapper.m_Player_Evade;
         public InputAction @BigSkill => m_Wrapper.m_Player_BigSkill;
+        public InputAction @SwitchRole => m_Wrapper.m_Player_SwitchRole;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1016,6 +1039,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @BigSkill.started += instance.OnBigSkill;
             @BigSkill.performed += instance.OnBigSkill;
             @BigSkill.canceled += instance.OnBigSkill;
+            @SwitchRole.started += instance.OnSwitchRole;
+            @SwitchRole.performed += instance.OnSwitchRole;
+            @SwitchRole.canceled += instance.OnSwitchRole;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1035,6 +1061,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @BigSkill.started -= instance.OnBigSkill;
             @BigSkill.performed -= instance.OnBigSkill;
             @BigSkill.canceled -= instance.OnBigSkill;
+            @SwitchRole.started -= instance.OnSwitchRole;
+            @SwitchRole.performed -= instance.OnSwitchRole;
+            @SwitchRole.canceled -= instance.OnSwitchRole;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1222,6 +1251,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnEvade(InputAction.CallbackContext context);
         void OnBigSkill(InputAction.CallbackContext context);
+        void OnSwitchRole(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
