@@ -56,7 +56,49 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.14028314
+        functionName: StartHit
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: c9addd9ccc4037e4a9cd63f70f56a444, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.1969112
+        functionName: StopHit
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: c9addd9ccc4037e4a9cd63f70f56a444, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.28957528
+        functionName: StartHit
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: c9addd9ccc4037e4a9cd63f70f56a444, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.33075932
+        functionName: StopHit
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: c9addd9ccc4037e4a9cd63f70f56a444, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.5495496
+        functionName: StartHit
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: c9addd9ccc4037e4a9cd63f70f56a444, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.5933076
+        functionName: StopHit
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: c9addd9ccc4037e4a9cd63f70f56a444, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

@@ -5380,7 +5380,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6610006076700305648
 Transform:
   m_ObjectHideFlags: 0
@@ -5443,6 +5443,7 @@ MonoBehaviour:
   skillConfig: {fileID: 11400000, guid: e64e41315a4f0ac4694076c69d1be0cc, type: 2}
   bigSkillStartShot: {fileID: 4496333923445366548}
   bigSkillShot: {fileID: 1181274223920945732}
+  weapons: []
   foot: 0
 --- !u!143 &6043998883039505069
 CharacterController:

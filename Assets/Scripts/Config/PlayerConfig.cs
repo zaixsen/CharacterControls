@@ -7,7 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Config/Player Config")]
 public class PlayerConfig : ScriptableObject
 {
-    //玩家配对
+    //玩家配队
     public GameObject[] models;
 
 }

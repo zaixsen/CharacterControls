@@ -35,6 +35,7 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
         controllableModels = new List<PlayerModel>();
 
         #region 生成角色模型
+
         for (int i = 0; i < playerConfig.models.Length; i++)
         {
             GameObject model = Instantiate(playerConfig.models[i], transform);
@@ -42,6 +43,7 @@ public class PlayerController : SingleMonoBase<PlayerController>, IStateMachineO
             model.SetActive(false);
             controllableModels[i].Init(enemyTagList);
         }
+
         #endregion
 
         #region 操控配队的第一个角色

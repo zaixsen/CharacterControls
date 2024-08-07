@@ -52,7 +52,10 @@ public class PlayerModel : MonoBehaviour, IHurt
     /// <param name="enemy"></param>
     private void OnHit(IHurt enemy)
     {
-        Debug.Log(((Component)enemy).name);
+        //Debug.Log(((Component)enemy).name);
+        EnemyController enemyController = ((Component)enemy).GetComponent<EnemyController>();
+
+        enemyController.SwitchState(EnemyState.Hurt);
     }
 
     /// <summary>
